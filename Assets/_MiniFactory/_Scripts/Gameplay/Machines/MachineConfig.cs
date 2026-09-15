@@ -2,7 +2,7 @@
 
 namespace MiniFactory.Gameplay.Machines
 {
-    [CreateAssetMenu(fileName = "MachineConfig", menuName = "Machines/MachineConfig")]
+    [CreateAssetMenu(fileName = "MachineConfig", menuName = "Configs/MachineConfig")]
     public sealed class MachineConfig : ScriptableObject
     {
         [SerializeField] private string _id;

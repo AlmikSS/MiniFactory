@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36429441cc6945628058c76b0c227962, type: 3}
   m_Name: MachineConfig1
   m_EditorClassIdentifier: Assembly-CSharp::MiniFactory.Gameplay.Machines.MachinesConfig
+  _id: machine_01
+  _displayName: CoolMachine
   _startProductivity: 10
-  _startCostToUnlock: 100
-  _startNextLevelPrice: 50
+  _baseUnlockCost: 300
+  _baseUpgradeCost: 450
+  _upgradeCostGrowth: 1.5
+  _productivityGrowth: 1.2
+  _addMoneyDelay: 1

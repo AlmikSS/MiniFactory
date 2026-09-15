@@ -2,6 +2,7 @@ using System.Collections;
 using KofeyekToolkit.Core.LifeCycle.Core;
 using KofeyekToolkit.Core.Scenes.Core;
 using KofeyekToolkit.Core.Scenes.Visual;
+using KofeyekToolkit.DI.Core;
 using KofeyekToolkit.Logging;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,7 @@ namespace KofeyekToolkit.Core.Scenes.Management
     {
         private readonly SpawnService _spawnService;
         private readonly LoadScreen _loadScreen;
+        private readonly DIContainer _container;
         private bool _isLoggingEnabled = true;
 
         public bool IsLoggingEnabled => _isLoggingEnabled;
@@ -24,9 +26,10 @@ namespace KofeyekToolkit.Core.Scenes.Management
         /// <summary>
         /// Предоставляет API-член <c>SceneSwitcher</c>.
         /// </summary>
-        public SceneSwitcher(SpawnService spawnService, LoadScreen loadScreen)
+        public SceneSwitcher(SpawnService spawnService, LoadScreen loadScreen, DIContainer container)
         {
             _loadScreen = loadScreen;
+            _container = container;
             _spawnService = spawnService;
         }
         
@@ -60,7 +63,8 @@ namespace KofeyekToolkit.Core.Scenes.Management
                 Warning($"Scene '{sceneName}' has no SceneBootstrap.");
                 yield break;
             }
-
+            
+            _container.Inject(bootstrap);
             bootstrap.Initialize(sceneArgs);
             _spawnService.SpawnInSceneObjects();
             Message($"Scene '{sceneName}' loaded and initialized.");

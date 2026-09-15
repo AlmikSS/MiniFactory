@@ -2,7 +2,7 @@
 
 namespace MiniFactory.Gameplay.Economy
 {
-    [CreateAssetMenu(fileName = "EconomyConfig", menuName = "MiniFactory/EconomyConfig")]
+    [CreateAssetMenu(fileName = "EconomyConfig", menuName = "Configs/EconomyConfig")]
     public sealed class EconomyConfig : ScriptableObject
     {
         [SerializeField] private int _startBalance;

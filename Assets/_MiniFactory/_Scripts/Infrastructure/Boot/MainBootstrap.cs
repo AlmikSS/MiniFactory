@@ -10,7 +10,13 @@ namespace MiniFactory.Gameplay.Boot
     {
         [SerializeField] private EconomyConfig _economyConfig;
 
-        [Inject] private DIContainer _container;
+        private DIContainer _container;
+
+        [Inject]
+        private void Construct(DIContainer container)
+        {
+            _container = container;
+        }
 
         public override void Initialize(ISceneArgs sceneArgs)
         {

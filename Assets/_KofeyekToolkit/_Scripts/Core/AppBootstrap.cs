@@ -34,7 +34,7 @@ namespace KofeyekToolkit.Core
             
             var tickService = new TickService(TickOptions.TICK_RATE);
             var spawnService = new SpawnService(tickService, diContainer);
-            var sceneSwitcher = new SceneSwitcher(spawnService, loadScreen);
+            var sceneSwitcher = new SceneSwitcher(spawnService, loadScreen, diContainer);
             var eventBus = new EventBus();
 
             if (logOptions != null)

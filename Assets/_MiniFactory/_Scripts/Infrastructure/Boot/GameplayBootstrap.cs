@@ -10,9 +10,17 @@ namespace MiniFactory.GamePlay.Boot
 {
     public sealed class GameplayBootstrap : SceneBootstrap
     {
-        [Inject] private DIContainer _container;
-        [Inject] private WalletService _walletService;
-        [Inject] private EventBus _eventBus;
+        private DIContainer _container;
+        private WalletService _walletService;
+        private EventBus _eventBus;
+
+        [Inject]
+        public void Construct(DIContainer container, WalletService walletService, EventBus eventBus)
+        {
+            _container = container;
+            _walletService = walletService;
+            _eventBus = eventBus;
+        }
         
         public override void Initialize(ISceneArgs sceneArgs)
         {
