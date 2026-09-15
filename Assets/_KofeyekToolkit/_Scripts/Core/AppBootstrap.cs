@@ -16,6 +16,8 @@ namespace KofeyekToolkit.Core
     /// </summary>
     internal static class AppBootstrap
     {
+        private const string GAMEPLAY_SCENE = "Gameplay";
+        
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Initialize()
         {
@@ -55,6 +57,7 @@ namespace KofeyekToolkit.Core
             spawnService.SpawnInSceneObjects();
             
             tickService.EnableTicking(true);
+            sceneSwitcher.LoadScene(GAMEPLAY_SCENE, null);
         }
     }
 }
