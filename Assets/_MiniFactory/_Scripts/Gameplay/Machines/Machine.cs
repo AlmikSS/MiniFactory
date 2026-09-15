@@ -1,5 +1,4 @@
-﻿using KofeyekToolkit.Core.TickSystem;
-using KofeyekToolkit.Core.TickSystem.Interfaces;
+﻿using KofeyekToolkit.Core.TickSystem.Interfaces;
 using KofeyekToolkit.DI.Attributes;
 using KofeyekToolkit.Events;
 using KofeyekToolkit.Logging;
