@@ -1,5 +1,6 @@
 ﻿using KofeyekToolkit.Core.LifeCycle.Core;
 using KofeyekToolkit.Core.Options;
+using KofeyekToolkit.Core.Scenes.Core;
 using KofeyekToolkit.Core.Scenes.Management;
 using KofeyekToolkit.Core.Scenes.Visual;
 using KofeyekToolkit.Core.TickSystem;
@@ -47,7 +48,7 @@ namespace KofeyekToolkit.Core
                 CommandExecutor.EnableLogging(logOptions.ShowCommandExecutorDebug);
                 CommandsRegistry.EnableLogging(logOptions.ShowCommandsRegistryDebug);
             }
-            
+            diContainer.RegisterInstance(diContainer);
             diContainer.RegisterInstance(tickService);
             diContainer.RegisterInstance(spawnService);
             diContainer.RegisterInstance(sceneSwitcher);
@@ -57,6 +58,14 @@ namespace KofeyekToolkit.Core
             spawnService.SpawnInSceneObjects();
             
             tickService.EnableTicking(true);
+            
+            var bootstrap = Object.FindAnyObjectByType<SceneBootstrap>();
+            if (bootstrap != null)
+            {
+                diContainer.Inject(bootstrap);
+                bootstrap.Initialize(null);
+            }
+            
             sceneSwitcher.LoadScene(GAMEPLAY_SCENE, null);
         }
     }
