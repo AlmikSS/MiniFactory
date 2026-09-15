@@ -54,7 +54,6 @@ namespace KofeyekToolkit.Core.Scenes.Management
             yield return new WaitUntil(() => waitOperation.isDone);
             
             _loadScreen.Hide();
-            _spawnService.SpawnInSceneObjects();
             var bootstrap = Object.FindAnyObjectByType<SceneBootstrap>();
             if (bootstrap == null)
             {
@@ -63,6 +62,7 @@ namespace KofeyekToolkit.Core.Scenes.Management
             }
 
             bootstrap.Initialize(sceneArgs);
+            _spawnService.SpawnInSceneObjects();
             Message($"Scene '{sceneName}' loaded and initialized.");
         }
 
