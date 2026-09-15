@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36429441cc6945628058c76b0c227962, type: 3}
-  m_Name: MachinesConfig
+  m_Name: MachineConfig3
   m_EditorClassIdentifier: Assembly-CSharp::MiniFactory.Gameplay.Machines.MachinesConfig
   _startProductivity: 10
   _startCostToUnlock: 100

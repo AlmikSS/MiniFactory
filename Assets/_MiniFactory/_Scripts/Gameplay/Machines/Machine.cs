@@ -10,9 +10,9 @@ namespace MiniFactory.Gameplay.Machines
     public sealed class Machine : MonoBehaviour, IGameplayTickable
     {
         [SerializeField] private bool _locked = true;
+        [SerializeField] private MachineConfig _config;
         
         private EventBus _eventBus;
-        private MachinesConfig _config;
         private uint _level = 1;
         private int _productivity;
         private int _costToUnlock;
@@ -21,13 +21,12 @@ namespace MiniFactory.Gameplay.Machines
         private float _addMoneyTimer;
         
         [Inject]
-        private void Construct(MachinesConfig config, EventBus eventBus)
+        private void Construct(EventBus eventBus)
         {
             _eventBus = eventBus;
-            _config = config;
             _productivity = _config.StartProductivity;
-            _costToUnlock = _config.StartCostToUnlock;
-            _nextLevelPrice = _config.StartNextLevelPrice;
+            _costToUnlock = _config.BaseUnlockCost;
+            _nextLevelPrice = _config.BaseUpgradeCost;
             Log.Message("Machine initialized correctly.");
         }
 
@@ -36,8 +35,11 @@ namespace MiniFactory.Gameplay.Machines
             if (_locked) return;
             
             _addMoneyTimer += deltaTime;
-            if (_addMoneyTimer >= _addMoneyDelay)
-                _eventBus.Invoke(new AddMoneyEvent(_productivity));
+            if (!(_addMoneyTimer >= _addMoneyDelay))
+                return;
+            
+            _eventBus.Invoke(new AddMoneyEvent(_productivity));
+            _addMoneyTimer = 0f;
         }
 
         public void LevelUp()
@@ -49,7 +51,7 @@ namespace MiniFactory.Gameplay.Machines
 
         public void Unlock()
         {
-            if (_locked) return;
+            if (!_locked) return;
             
             _locked = true;
         }
