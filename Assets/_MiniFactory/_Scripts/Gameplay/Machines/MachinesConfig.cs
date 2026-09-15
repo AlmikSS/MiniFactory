@@ -5,12 +5,14 @@ namespace MiniFactory.Gameplay.Machines
     [CreateAssetMenu(fileName = "MachinesConfig", menuName = "Machines/MachinesConfig")]
     public sealed class MachinesConfig : ScriptableObject
     {
-        [SerializeField] private float _startProductivity;
-        [SerializeField] private float _startCostToUnlock;
-        [SerializeField] private float _startNextLevelPrice;
+        [SerializeField] private int _startProductivity;
+        [SerializeField] private int _startCostToUnlock;
+        [SerializeField] private int _startNextLevelPrice;
+        [SerializeField] private float _addMoneyDelay;
 
-        public float StartProductivity => _startProductivity;
-        public float StartCostToUnlock => _startCostToUnlock;
-        public float StartNextLevelPrice => _startNextLevelPrice;
+        public int StartProductivity => _startProductivity;
+        public int StartCostToUnlock => _startCostToUnlock;
+        public int StartNextLevelPrice => _startNextLevelPrice;
+        public float AddMoneyDelay => _addMoneyDelay;
     }
 }

@@ -1,6 +1,9 @@
-﻿using KofeyekToolkit.Core.TickSystem.Interfaces;
+﻿using KofeyekToolkit.Core.TickSystem;
+using KofeyekToolkit.Core.TickSystem.Interfaces;
 using KofeyekToolkit.DI.Attributes;
+using KofeyekToolkit.Events;
 using KofeyekToolkit.Logging;
+using MiniFactory.GamePlay.Events;
 using UnityEngine;
 
 namespace MiniFactory.Gameplay.Machines
@@ -9,15 +12,19 @@ namespace MiniFactory.Gameplay.Machines
     {
         [SerializeField] private bool _locked = true;
         
+        private EventBus _eventBus;
         private MachinesConfig _config;
         private uint _level = 1;
-        private float _productivity;
-        private float _costToUnlock;
-        private float _nextLevelPrice;
+        private int _productivity;
+        private int _costToUnlock;
+        private int _nextLevelPrice;
+        private float _addMoneyDelay;
+        private float _addMoneyTimer;
         
         [Inject]
-        private void Initialize(MachinesConfig config)
+        private void Construct(MachinesConfig config, EventBus eventBus)
         {
+            _eventBus = eventBus;
             _config = config;
             _productivity = _config.StartProductivity;
             _costToUnlock = _config.StartCostToUnlock;
@@ -27,7 +34,31 @@ namespace MiniFactory.Gameplay.Machines
 
         public void Tick(float deltaTime)
         {
+            if (_locked) return;
             
+            _addMoneyTimer += deltaTime;
+            if (_addMoneyTimer >= _addMoneyDelay)
+                _eventBus.Invoke(new AddMoneyEvent(_productivity));
+        }
+
+        public void LevelUp()
+        {
+            if (_locked) return;
+            
+            CalculateNewLevelStats();
+        }
+
+        public void Unlock()
+        {
+            if (_locked) return;
+            
+            _locked = true;
+        }
+
+        private void CalculateNewLevelStats()
+        {
+            _level++;
+            //TODO Some formulas
         }
     }
 }
