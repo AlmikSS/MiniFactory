@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcc73eca60504cb6b6d161e1a80a60cd, type: 3}
+  m_Name: LogOptions
+  m_EditorClassIdentifier: Assembly-CSharp::KofeyekToolkit.Logging.LogOptions
+  _showCommandsRegistryDebug: 1
+  _showDevUIDebug: 0
+  _showCommandExecutorDebug: 1
+  _showTickServiceDebug: 1
+  _showSpawnServiceDebug: 1
+  _showSceneSwitcherDebug: 1
+  _showEventBusDebug: 1
+  _showDiDebug: 1
