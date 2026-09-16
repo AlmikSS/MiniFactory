@@ -71,8 +71,8 @@ namespace MiniFactory.Gameplay.Machines
             if (_locked) return;
             
             _level++;
-            _productivity = CalculateProductivity(_level);
-            _nextLevelPrice = CalculateUpgradeCost(_level);
+            _productivity = MachineMath.CalculateProductivity(_config.StartProductivity, _config.ProductivityGrowth, _level);
+            _nextLevelPrice = MachineMath.CalculateUpgradeCost(_config.BaseUpgradeCost, _config.UpgradeCostGrowth, _level);
         }
 
         public void Unlock()
@@ -88,18 +88,6 @@ namespace MiniFactory.Gameplay.Machines
             _level = level;
             _productivity = productivity;
             _nextLevelPrice = nextLevelPrice;
-        }
-        
-        private int CalculateProductivity(int level)
-        {
-            var value = _config.StartProductivity * Mathf.Pow(_config.ProductivityGrowth, level - 1);
-            return Mathf.RoundToInt(value);
-        }
-
-        private int CalculateUpgradeCost(int level)
-        {
-            var value = _config.BaseUpgradeCost * Mathf.Pow(_config.UpgradeCostGrowth, level - 1);
-            return Mathf.CeilToInt(value);
         }
     }
 }

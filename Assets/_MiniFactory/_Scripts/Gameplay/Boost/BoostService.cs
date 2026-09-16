@@ -75,12 +75,7 @@ namespace MiniFactory.Gameplay.Boost
 
         public long GetBoostedSecondsInRange(long rangeStart, long rangeEnd)
         {
-            if (_endUnixSeconds <= rangeStart || _startUnixSeconds >= rangeEnd)
-                return 0;
-
-            var overlapStart = Math.Max(_startUnixSeconds, rangeStart);
-            var overlapEnd = Math.Min(_endUnixSeconds, rangeEnd);
-            return Math.Max(0, overlapEnd - overlapStart);
+            return BoostMath.GetBoostedSecondsInRange(_startUnixSeconds, _endUnixSeconds, rangeStart, rangeEnd);
         }
 
         public void Tick(float deltaTime)

@@ -43,10 +43,10 @@ namespace MiniFactory.Gameplay.Offline
             Apply();
         }
 
-        private void Apply()
+        public void Apply()
         {
             var data = _saveService.GetData();
-            if (data is not { LastExitUnixSeconds: > 0 })
+            if (data == null || data.LastExitUnixSeconds <= 0)
                 return;
 
             var now = NowUnix;
@@ -61,26 +61,28 @@ namespace MiniFactory.Gameplay.Offline
             var boostedSeconds = _boostService.GetBoostedSecondsInRange(
                 data.LastExitUnixSeconds,
                 data.LastExitUnixSeconds + cappedElapsed);
-
             var normalSeconds = cappedElapsed - boostedSeconds;
 
             double baseIncome = _machineController.GetTotalIncomePerSecond();
-            var income = baseIncome * normalSeconds + baseIncome * _boostService.Multiplier * boostedSeconds;
+            var amount = OfflineMath.CalculateIncome(
+                baseIncome,
+                normalSeconds,
+                boostedSeconds,
+                _boostService.Multiplier);
 
-            var rounded = (int)Math.Round(income);
-            if (rounded <= 0)
+            if (amount <= 0)
                 return;
 
-            _walletService.Add(rounded);
+            _walletService.Add(amount);
 
             _eventBus.Invoke(new OfflineIncomeAppliedEvent
             {
-                Amount = rounded,
+                Amount = amount,
                 ElapsedSeconds = cappedElapsed,
                 BoostedSeconds = boostedSeconds
             });
 
-            Log.Message($"Offline income: {rounded} (elapsed {cappedElapsed}s, boosted {boostedSeconds}s)");
+            Log.Message($"Offline income: {amount} (elapsed {cappedElapsed}s, boosted {boostedSeconds}s)");
         }
     }
 }
