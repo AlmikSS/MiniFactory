@@ -26,9 +26,12 @@ namespace KofeyekToolkit.Core
             Log.Initialize();
             var diContainer = new DIContainer();
             diContainer.RegisterServicesFromAssemblies(typeof(AppBootstrap).Assembly);
-            CommandsRegistry.RegisterAllCommands();
+
+            #if UNITY_EDITOR
+                CommandsRegistry.RegisterAllCommands();
+            #endif
             
-            var devConsoleUI = Object.FindAnyObjectByType<DevConsoleUI>();
+            //var devConsoleUI = Object.FindAnyObjectByType<DevConsoleUI>();
             var loadScreen = Object.FindAnyObjectByType<LoadScreen>();
             var logOptions = Resources.Load<LogOptions>("LogOptions");
             
@@ -43,10 +46,10 @@ namespace KofeyekToolkit.Core
                 spawnService.EnableLogging(logOptions.ShowSpawnServiceDebug);
                 sceneSwitcher.EnableLogging(logOptions.ShowSceneSwitcherDebug);
                 eventBus.EnableLogging(logOptions.ShowEventBusDebug);
-                devConsoleUI?.EnableLogging(logOptions.ShowDevUIDebug);
+                //devConsoleUI?.EnableLogging(logOptions.ShowDevUIDebug);
                 diContainer.EnableLogging(logOptions.ShowDiDebug);
-                CommandExecutor.EnableLogging(logOptions.ShowCommandExecutorDebug);
-                CommandsRegistry.EnableLogging(logOptions.ShowCommandsRegistryDebug);
+                //CommandExecutor.EnableLogging(logOptions.ShowCommandExecutorDebug);
+                //CommandsRegistry.EnableLogging(logOptions.ShowCommandsRegistryDebug);
             }
             diContainer.RegisterInstance(diContainer);
             diContainer.RegisterInstance(tickService);
