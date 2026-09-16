@@ -3,6 +3,7 @@ using KofeyekToolkit.Core.TickSystem;
 using KofeyekToolkit.DI.Attributes;
 using KofeyekToolkit.DI.Core;
 using KofeyekToolkit.Events;
+using MiniFactory.Analytics;
 using MiniFactory.Gameplay.Boost;
 using MiniFactory.Gameplay.Economy;
 using MiniFactory.Persistence.Logic;
@@ -44,6 +45,15 @@ namespace MiniFactory.Gameplay.Boot
             
             var tickService = _container.Resolve<TickService>();
             tickService.Register(boostService);
+            
+            var analytics = new AnalyticsService();
+            analytics.Register(new DebugAnalyticsProvider());
+            _container.RegisterInstance(analytics);
+
+            var analyticsListener = new GameplayAnalyticsListener(eventBus, analytics);
+            _container.RegisterInstance(analyticsListener);
+
+            analytics.SendEvent(AnalyticsEventNames.GAME_STARTED);
         }
     }
 }
