@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_MiniFactory/Scenes/Boot.unity
     guid: ac632665d78c1f74a98760d230d43703
+  - enabled: 1
+    path: Assets/_MiniFactory/Scenes/Gameplay.unity
+    guid: 38121ec2934d240448dac398ba50f78d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

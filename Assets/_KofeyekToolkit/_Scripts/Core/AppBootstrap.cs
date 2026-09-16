@@ -1,5 +1,6 @@
 ﻿using KofeyekToolkit.Core.LifeCycle.Core;
 using KofeyekToolkit.Core.Options;
+using KofeyekToolkit.Core.Scenes.Core;
 using KofeyekToolkit.Core.Scenes.Management;
 using KofeyekToolkit.Core.Scenes.Visual;
 using KofeyekToolkit.Core.TickSystem;
@@ -16,6 +17,8 @@ namespace KofeyekToolkit.Core
     /// </summary>
     internal static class AppBootstrap
     {
+        private const string GAMEPLAY_SCENE = "Gameplay";
+        
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Initialize()
         {
@@ -31,7 +34,7 @@ namespace KofeyekToolkit.Core
             
             var tickService = new TickService(TickOptions.TICK_RATE);
             var spawnService = new SpawnService(tickService, diContainer);
-            var sceneSwitcher = new SceneSwitcher(spawnService, loadScreen);
+            var sceneSwitcher = new SceneSwitcher(spawnService, loadScreen, diContainer);
             var eventBus = new EventBus();
 
             if (logOptions != null)
@@ -45,7 +48,7 @@ namespace KofeyekToolkit.Core
                 CommandExecutor.EnableLogging(logOptions.ShowCommandExecutorDebug);
                 CommandsRegistry.EnableLogging(logOptions.ShowCommandsRegistryDebug);
             }
-            
+            diContainer.RegisterInstance(diContainer);
             diContainer.RegisterInstance(tickService);
             diContainer.RegisterInstance(spawnService);
             diContainer.RegisterInstance(sceneSwitcher);
@@ -55,6 +58,15 @@ namespace KofeyekToolkit.Core
             spawnService.SpawnInSceneObjects();
             
             tickService.EnableTicking(true);
+            
+            var bootstrap = Object.FindAnyObjectByType<SceneBootstrap>();
+            if (bootstrap != null)
+            {
+                diContainer.Inject(bootstrap);
+                bootstrap.Initialize(null);
+            }
+            
+            sceneSwitcher.LoadScene(GAMEPLAY_SCENE, null);
         }
     }
 }
