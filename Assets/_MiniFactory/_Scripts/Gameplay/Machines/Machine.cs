@@ -36,6 +36,9 @@ namespace MiniFactory.Gameplay.Machines
         
         public void OnConstruct()
         {
+            if (_level > 0)
+                return;
+            
             if (_config == null)
             {
                 Log.Error($"{nameof(Machine)} on '{name}' has no {nameof(MachineConfig)} assigned.");
@@ -77,6 +80,14 @@ namespace MiniFactory.Gameplay.Machines
             if (!_locked) return;
             
             _locked = false;
+        }
+        
+        public void RestoreState(bool isLocked, int level, int productivity, int nextLevelPrice)
+        {
+            _locked = isLocked;
+            _level = level;
+            _productivity = productivity;
+            _nextLevelPrice = nextLevelPrice;
         }
         
         private int CalculateProductivity(int level)

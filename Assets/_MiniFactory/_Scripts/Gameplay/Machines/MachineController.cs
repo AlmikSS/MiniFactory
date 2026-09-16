@@ -2,23 +2,28 @@
 using KofeyekToolkit.Events;
 using MiniFactory.Gameplay.Economy;
 using MiniFactory.Gameplay.Events;
+using MiniFactory.Persistence.Data;
+using MiniFactory.Persistence.Interfaces;
+using MiniFactory.Persistence.Logic;
 using UnityEngine;
 
 namespace MiniFactory.Gameplay.Machines
 {
-    public sealed class MachineController
+    public sealed class MachineController : ISaveable
     {
         private readonly List<Machine> _machines;
         private readonly WalletService _walletService;
         private readonly EventBus _eventBus;
+        private readonly SaveService _saveService;
 
         public IReadOnlyList<Machine> Machines => _machines;
         
-        public MachineController(IEnumerable<Machine> machines, WalletService walletService, EventBus eventBus)
+        public MachineController(IEnumerable<Machine> machines, WalletService walletService, EventBus eventBus, SaveService saveService)
         {
             _machines = new List<Machine>(machines);
             _walletService = walletService;
             _eventBus = eventBus;
+            _saveService = saveService;
         }
         
         public bool TryUnlock(Machine machine)
@@ -36,6 +41,8 @@ namespace MiniFactory.Gameplay.Machines
                 MachineId = machine.Id,
                 Cost = cost
             });
+            
+            _saveService?.MarkDirty();
             return true;
         }
         
@@ -55,6 +62,8 @@ namespace MiniFactory.Gameplay.Machines
                 NewLevel = machine.Level,
                 Cost = cost
             });
+            
+            _saveService?.MarkDirty();
             return true;
         }
         
@@ -70,6 +79,44 @@ namespace MiniFactory.Gameplay.Machines
             }
 
             return total;
+        }
+        
+        public void Capture(SaveData data)
+        {
+            data.Machines.Clear();
+            foreach (var m in _machines)
+            {
+                if (m == null) continue;
+
+                data.Machines.Add(new MachineSaveData
+                {
+                    Id = m.Id,
+                    IsLocked = m.IsLocked,
+                    Level = m.Level,
+                    Productivity = m.Productivity,
+                    NextLevelPrice = m.NextLevelPrice
+                });
+            }
+        }
+
+        public void Restore(SaveData data)
+        {
+            if (data.Machines == null || data.Machines.Count == 0)
+                return;
+
+            foreach (var machine in _machines)
+            {
+                if (machine == null) continue;
+
+                foreach (var saved in data.Machines)
+                {
+                    if (saved.Id != machine.Id)
+                        continue;
+
+                    machine.RestoreState(saved.IsLocked, saved.Level, saved.Productivity, saved.NextLevelPrice);
+                    break;
+                }
+            }
         }
     }
 }
