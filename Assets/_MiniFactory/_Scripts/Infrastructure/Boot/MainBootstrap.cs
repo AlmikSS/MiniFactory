@@ -7,6 +7,7 @@ using MiniFactory.Analytics;
 using MiniFactory.Gameplay.Boost;
 using MiniFactory.Gameplay.Economy;
 using MiniFactory.Persistence.Logic;
+using MiniFactory.Purchases;
 using UnityEngine;
 
 namespace MiniFactory.Gameplay.Boot
@@ -15,6 +16,7 @@ namespace MiniFactory.Gameplay.Boot
     {
         [SerializeField] private EconomyConfig _economyConfig;
         [SerializeField] private BoostConfig _boostConfig;
+        [SerializeField] private PurchaseConfig _purchaseConfig;
 
         private DIContainer _container;
 
@@ -52,6 +54,14 @@ namespace MiniFactory.Gameplay.Boot
 
             var analyticsListener = new GameplayAnalyticsListener(eventBus, analytics);
             _container.RegisterInstance(analyticsListener);
+
+            var gateway = PurchaseServiceFactory.Create(_purchaseConfig, eventBus, analytics);
+            _container.RegisterInstance(gateway);
+
+            var rewardHandler = new PurchaseRewardHandler(eventBus, walletService);
+            _container.RegisterInstance(rewardHandler);
+
+            gateway.Initialize();
 
             analytics.SendEvent(AnalyticsEventNames.GAME_STARTED);
         }

@@ -792,6 +792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiniFactory.Gameplay.Boot.MainBootstrap
   _economyConfig: {fileID: 11400000, guid: c59e6e8ca23169c42967e4ab3d4e559a, type: 2}
   _boostConfig: {fileID: 11400000, guid: 38c5711335cf88a46ab3929bc7437fe5, type: 2}
+  _purchaseConfig: {fileID: 11400000, guid: cef41018f7983464c96e465e088310ed, type: 2}
 --- !u!1 &2027900065
 GameObject:
   m_ObjectHideFlags: 0
