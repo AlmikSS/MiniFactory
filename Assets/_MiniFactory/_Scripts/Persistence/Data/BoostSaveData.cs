@@ -7,7 +7,7 @@ namespace MiniFactory.Persistence.Data
     {
         public bool IsActive;
         public long StartUnixSeconds;
-        public float DurationSeconds;
+        public long EndUnixSeconds;
         public float Multiplier;
     }
 }

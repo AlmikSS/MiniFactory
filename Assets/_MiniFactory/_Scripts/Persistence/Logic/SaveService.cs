@@ -15,6 +15,7 @@ namespace MiniFactory.Persistence.Logic
         private readonly ISaveStorage _storage;
         private readonly List<ISaveable> _saveables = new();
 
+        private SaveData _lastLoadedData;
         private float _autoSaveTimer;
         private bool _isDirty;
 
@@ -23,6 +24,8 @@ namespace MiniFactory.Persistence.Logic
             _storage = storage;
         }
 
+        public SaveData GetData() => _lastLoadedData;
+        
         public void Register(ISaveable saveable)
         {
             if (saveable == null || _saveables.Contains(saveable))
@@ -76,6 +79,7 @@ namespace MiniFactory.Persistence.Logic
                 }
             }
 
+            _lastLoadedData = data;
             _isDirty = false;
         }
 
